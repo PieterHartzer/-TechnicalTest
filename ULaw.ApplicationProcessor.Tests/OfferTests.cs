@@ -5,7 +5,6 @@ using ULaw.ApplicationProcessor.Interfaces;
 
 namespace ULaw.ApplicationProcessor.Tests
 {
-
     [TestClass]
     public class ApplicationSubmissionTests
     {
@@ -20,7 +19,21 @@ namespace ULaw.ApplicationProcessor.Tests
         private const string RejectionEmailForAnyThirdDegreeResult = @"<html><body><h1>Your Recent Application from the University of Law</h1><p> Dear Test, </p><p/> Further to your recent application, we are sorry to inform you that you have not been successful on this occasion.<br/> If you wish to discuss the decision further, or discuss the possibility of applying for an alternative course with us, please contact us at AdmissionsTeam@Ulaw.co.uk.<br/> Yours sincerely,<p/> The Admissions Team,</body></html>";
 
         private readonly Applicant _applicant = new Applicant("Law", "ABC123", new DateTime(2019, 9, 22), "Mr", "Test", "Tester", new DateTime(1991, 08, 14), false);
+        // TODO: Replace with IOC/DI
         private readonly IMessageBuilder _messageBuilder = new MessageBuilder();
+
+        //! NOTE: The instructions state that the coverage must retain the same coverage and the same equal assertions
+        //           - code coverage was not checked.  None included and no time to add any.
+        //           - not certain if the same equal assertions means all the existing or the same number.  Presumed the same existing ones so new one(s) added.
+        //! TODO: Change the tests to test the MessageBuilder separately as it's no longer a unit test but integration
+
+        [TestMethod]
+        public void NullParameterApplicationSubmission()
+        {
+            // Test all parameters here - could be split but it's such a small test
+            Assert.ThrowsException<ArgumentNullException>(() => new Application(null, _messageBuilder));
+            Assert.ThrowsException<ArgumentNullException>(() => new Application(_applicant, null));
+        }
 
         [TestMethod]
         public void ApplicationSubmissionWithFirstLawDegreeHtmlEncoded()

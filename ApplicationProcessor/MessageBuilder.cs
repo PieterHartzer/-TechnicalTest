@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using System.Web;
 using ULaw.ApplicationProcessor.Enums;
 using ULaw.ApplicationProcessor.Interfaces;
@@ -10,10 +11,17 @@ namespace ULaw.ApplicationProcessor
     {
         public string BuildMessage(Applicant applicant)
         {
+            if (applicant == null)
+            {
+                // This should not happen (especially in this app)
+                throw new ArgumentNullException("applicant");
+            }
+
             // HACK: These string templates are awful.  Use a real templating engine
             var result = new StringBuilder("<html><body><h1>Your Recent Application from the University of Law</h1>");
             result.Append(string.Format("<p> Dear {0}, </p>", HttpUtility.HtmlEncode(applicant.FirstName)));
 
+            // Switch for clarity; if/else could perform better
             switch (applicant.DegreeGrade)
             {
                 case DegreeGradeEnum.twoTwo:
